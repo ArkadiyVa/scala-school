@@ -16,6 +16,10 @@ package homework.l2
   */
 object ListFunctions {
 
-  def fold[A, B](startValue: B, list: List[A])(f: (B, A) => B): B = ???
-
+  def fold[A, B](startValue: B, list: List[A])(f: (B, A) => B): B = {
+    if (list.isEmpty) startValue
+    else {
+      fold(f(startValue, list.head), list.tail)(f)
+    }
+  }
 }

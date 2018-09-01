@@ -2,10 +2,10 @@ package lectures.l7
 
 object Main extends App {
   {
-    import v1._
-//    val storage1: MemoryStorage[String] = MemoryStorage[String](Dog("a", "b")).persist(Dog("b", "c")).persist(Husky("x")).persist(Cat("b", "c"))
+//    import v1._
+//   val storage1: MemoryStorage[String] = MemoryStorage[String](Dog("a", "b")).persist(Dog("b", "c")).persist(Husky("x")).persist(Cat("b", "c"))
 //    println(storage1)
-  }
+ }
 
   {
     import v2._

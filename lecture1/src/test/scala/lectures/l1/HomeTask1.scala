@@ -1,19 +1,20 @@
-package lectures.l1
-/*
-
 import org.scalatest.{FlatSpec, Matchers}
 
-object CountRoundToLower {
+object CountRoundToLower{
   def undefined() = throw new IllegalArgumentException("*.5")
 
-  def toHigh(v) = {
-    val number = v * 10 % 10
-
+  def toHigh(v:Float):Float = {
+    v * 10 % 10
   }
 
-  def counter(toUp) = ???
-
-  def count(list) = list.map(v => counter(toHigh(v))).sum
+  def counter(toUp:Float):Int= {
+    if(toUp >= 6) return 0
+    if(toUp >= 0 && toUp < 5) return 1
+    if(toUp > (-5) && toUp < 0) return 0
+    if(toUp <= (-6)) return 1
+    undefined()
+  }
+  def count(list:Seq[Float]) = list.map(v => counter(toHigh(v))).sum
 }
 
 class CountRoundToLowerTest extends FlatSpec with Matchers {
@@ -35,5 +36,3 @@ class CountRoundToLowerTest extends FlatSpec with Matchers {
     count(Seq(1000000000l)) shouldBe 1
   }
 }
-
-*/

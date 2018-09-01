@@ -14,8 +14,8 @@ class RegexTest extends FlatSpecLike with Matchers {
         |Data Smart,"Foreman, John",data_science,235,Wiley
       """.stripMargin
     ) shouldBe Seq(
-      Book("Fundamentals of Wavelets", "Goswami, Jaideva", "signal_processing", 228, "Wiley"),
-      Book("Data Smart", "Foreman, John", "data_science", 235, "Wiley")
+      BookRegex("Fundamentals of Wavelets", "Goswami, Jaideva", "signal_processing", 228, "Wiley"),
+      BookRegex("Data Smart", "Foreman, John", "data_science", 235, "Wiley")
     )
   }
 }

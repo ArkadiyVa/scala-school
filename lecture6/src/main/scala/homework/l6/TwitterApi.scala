@@ -1,5 +1,4 @@
 package homework.l6
-
 /**
   * Вам необходимо реализовать api для создания твиттов, получения твитта и лайка твитта
   *
@@ -26,7 +25,9 @@ case class Tweet(id: String,
                  createdAt: Option[Instant] = None,
                  likes: Int)
 
-class NoTweetFoundException(id: String) extends Exception(s"Cannot find tweet=$id")
+class NoTweetFoundException(id: String)
+  extends Exception(s"Cannot find tweet=$id")
+class IncorrectLengthException extends Exception(s"Incorrect length tweet")
 
 trait Request
 case class CreateTweetRequest(text: String, user: String) extends Request
@@ -34,4 +35,61 @@ case class GetTweetRequest(id: String) extends Request
 case class LikeRequest(id: String) extends Request
 
 object TwitterApi extends App {
+  val regExTweet = "(#[A-Za-z0-9_]+)".r
+  val tweetsMap = scala.collection.mutable.Map.empty[String, Tweet]
+
+  trait Creator {
+
+    def getId: String = {
+      java.util.UUID.randomUUID.toString
+
+    }
+
+    def getHashTag(text: String): Seq[String] = {
+      (regExTweet findAllIn text).toList
+    }
+    def validate(crt: CreateTweetRequest): Boolean = {
+      crt.text.length < 280
+    }
+
+    def createTweet(crt: CreateTweetRequest): Tweet = {
+      val newTweetId = getId
+      if (validate(crt)) {
+        tweetsMap += (newTweetId -> Tweet(newTweetId,
+          crt.user,
+          crt.text,
+          getHashTag(crt.text),
+          None,
+          0))
+        tweetsMap(newTweetId)
+      } else throw new IncorrectLengthException
+    }
+  }
+
+  trait getTweetReq {
+
+    def getTweet(gtr: GetTweetRequest): Tweet = {
+      val tweet = tweetsMap.get(gtr.id)
+      if (tweet.isDefined) tweetsMap(gtr.id)
+      else throw new NoTweetFoundException(gtr.id)
+    }
+
+  }
+  trait likeReq {
+
+    def updateLikes(tweet: Tweet): Tweet = {
+      tweet.copy(createdAt = Some(Instant.now()), likes = tweet.likes + 1)
+    }
+
+    def likeTweet(lr: LikeRequest): Tweet = {
+      val tweet = tweetsMap.get(lr.id)
+
+      tweet map { _ =>
+        val updatedTweet = updateLikes(tweet.get)
+        tweetsMap += (lr.id -> updatedTweet)
+        updatedTweet
+      } getOrElse (throw new NoTweetFoundException(lr.id))
+    }
+
+  }
 }

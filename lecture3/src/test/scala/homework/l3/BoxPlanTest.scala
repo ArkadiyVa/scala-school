@@ -32,6 +32,6 @@ class BoxPlanTest extends FlatSpecLike with Matchers {
       Easel(),
       Uculele(),
       Dish()
-    )) should contain theSameElementsAs ???
+    )) should contain theSameElementsAs Seq[Box](GuitarBox(),BigBox(),GuitarBox(),PlayStationBox(),BasicBox(),EaselBox())
   }
 }
